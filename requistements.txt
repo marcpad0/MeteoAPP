@@ -1,0 +1,6 @@
+fastapi
+pydantic[email]
+requests
+uvicorn
+sqlalchemy
+email-validator
