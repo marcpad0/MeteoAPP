@@ -421,10 +421,10 @@
   function createRainDrop(heavy) {
     return {
       t: 'r', x: Math.random() * canvas.width * 1.2 - canvas.width * 0.1,
-      y: -20 - Math.random() * 200, len: heavy ? (18 + Math.random() * 22) : (10 + Math.random() * 14),
-      sp: heavy ? (14 + Math.random() * 10) : (7 + Math.random() * 6),
-      w: heavy ? 2.5 : 1.2, o: heavy ? (0.25 + Math.random() * 0.2) : (0.12 + Math.random() * 0.12),
-      lw: heavy ? (1.5 + Math.random()) : (1 + Math.random() * 0.5)
+      y: -20 - Math.random() * 300, len: heavy ? (30 + Math.random() * 35) : (14 + Math.random() * 18),
+      sp: heavy ? (18 + Math.random() * 14) : (9 + Math.random() * 8),
+      w: heavy ? 3.2 : 1.6, o: heavy ? (0.45 + Math.random() * 0.25) : (0.2 + Math.random() * 0.15),
+      lw: heavy ? (2.2 + Math.random() * 1.2) : (1.3 + Math.random() * 0.7)
     };
   }
 
@@ -464,14 +464,14 @@
   function startEffect(type) {
     stopEffect(); currentEffect = type; particles = [];
     var i;
-    if (type==='rain') { for(i=0;i<200;i++) particles.push(createRainDrop(true)); }
-    else if (type==='drizzle') { for(i=0;i<60;i++) particles.push(createRainDrop(false)); }
+    if (type==='rain') { for(i=0;i<400;i++) particles.push(createRainDrop(true)); }
+    else if (type==='drizzle') { for(i=0;i<120;i++) particles.push(createRainDrop(false)); }
     else if (type==='snow') { for(i=0;i<120;i++) particles.push(createSnowflake()); }
     else if (type==='fog') { for(i=0;i<12;i++) particles.push(createFogCloud()); }
     else if (type==='clear') { for(i=0;i<8;i++) particles.push(createSunMote()); }
     else if (type==='partly-cloudy') { for(i=0;i<4;i++) particles.push(createSunMote()); for(i=0;i<5;i++) particles.push(createFogCloud()); }
     else if (type==='cloudy') { for(i=0;i<8;i++) particles.push(createFogCloud()); }
-    else if (type==='thunder') { for(i=0;i<250;i++) particles.push(createRainDrop(true)); }
+    else if (type==='thunder') { for(i=0;i<450;i++) particles.push(createRainDrop(true)); }
     animate();
   }
 
@@ -490,7 +490,7 @@
       if (p.t==='r') {
         p.x += p.w; p.y += p.sp;
         ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(p.x+p.w*0.5, p.y+p.len);
-        ctx.strokeStyle='rgba(180,200,220,'+p.o+')'; ctx.lineWidth=p.lw; ctx.lineCap='round'; ctx.stroke();
+        ctx.strokeStyle='rgba(200,215,235,'+p.o+')'; ctx.lineWidth=p.lw; ctx.lineCap='round'; ctx.stroke();
         if (p.y>canvas.height) {
           if (Math.random()<0.3) { var sp=createSplash(p.x,canvas.height-2); for(var s=0;s<sp.length;s++) np.push(sp[s]); }
           p.x=Math.random()*canvas.width*1.2-canvas.width*0.1; p.y=-20-Math.random()*100;
