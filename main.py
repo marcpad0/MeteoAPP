@@ -3,6 +3,7 @@ import uvicorn
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from database import engine, get_db, Base
@@ -27,7 +28,11 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Email already registered")
     new_user = User(name=user.name, email=user.email, password=user.password)
     db.add(new_user)
-    db.commit()
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(status_code=400, detail="Email already registered")
     db.refresh(new_user)
     return new_user
 
@@ -96,7 +101,11 @@ def save_favorite_city(user_id: int, city: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="City already in favorites")
     favorite = FavoriteCity(user_id=user_id, city=city)
     db.add(favorite)
-    db.commit()
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(status_code=400, detail="City already in favorites")
     db.refresh(favorite)
     return favorite
 
